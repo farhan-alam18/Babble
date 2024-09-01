@@ -27,7 +27,6 @@ export const signup = async (req, res) => {
         .json({ error: "Password must be at least 6 characters long" });
     }
 
-    // Hashing Password :
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -112,5 +111,3 @@ export const getMe = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
-
-// 57:50
