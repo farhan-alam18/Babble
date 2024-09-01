@@ -21,8 +21,10 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Email is already taken" });
     }
 
-    if(password.length < 6){
-      return res.status(400).json({error: "Password must be at least 6 characters long"})
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ error: "Password must be at least 6 characters long" });
     }
 
     // Hashing Password :
@@ -61,9 +63,34 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  res.json({
-    data: "You have hit the login endpoint",
-  });
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user?.password || ""
+    );
+
+    if (!user || !isPasswordCorrect) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
+
+    generateTokenandSetCookie(user._id, res);
+
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      username: user.username,
+      email: user.email,
+      followers: user.followers,
+      following: user.following,
+      profileImg: user.profileImg,
+      coverImg: user.coverImg,
+    });
+  } catch (error) {
+    console.log("Error in login controller", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export const logout = async (req, res) => {
