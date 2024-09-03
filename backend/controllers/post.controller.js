@@ -196,16 +196,27 @@ export const followingPosts = async (req, res) => {
   }
 };
 
+export const userPosts = async (req, res) => {
+  try {
+    const { username } = req.params;
 
-export const userPosts = async (req,res) => {
-   try {
-    const {username} = req.params
+    const user = await User.findOne({ username });
+    if (!user) res.status(404).json({ error: "User not found" });
 
-    const user = await User.findOne({username})
+    const posts = await Post.find({ user: user._id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "comments.user",
+        select: "-password",
+      });
 
-    
-    
-   } catch (error) {
-    
-   }
-}
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("Error in userPosts : ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
