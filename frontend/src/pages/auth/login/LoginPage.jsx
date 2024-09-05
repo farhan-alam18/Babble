@@ -6,7 +6,7 @@ import BabbleSvg from "../../../components/svgs/Babble";
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
@@ -14,6 +14,8 @@ const LoginPage = () => {
     username: "",
     password: "",
   });
+
+  const queryClient = useQueryClient();
 
   const {
     mutate: LoginMutation,
@@ -41,6 +43,7 @@ const LoginPage = () => {
     },
     onSuccess: () => {
       toast.success("Account logged in successfully");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
   });
 
