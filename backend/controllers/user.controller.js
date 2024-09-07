@@ -148,7 +148,7 @@ export const updateUser = async (req, res) => {
         );
       }
       const uploadedResponse = await cloudinary.uploader.upload(coverImg);
-      profileImg = uploadedResponse.secure_url;
+      coverImg = uploadedResponse.secure_url;
     }
 
     user.fullName = fullName || user.fullName;
