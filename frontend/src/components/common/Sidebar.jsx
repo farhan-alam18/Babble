@@ -37,10 +37,11 @@ const Sidebar = () => {
   return (
     <div className="md:flex-[2_2_0] w-18 max-w-52">
       <div className="sticky top-0 left-0 h-screen flex flex-col border-r border-gray-700 w-20 md:w-full">
-        <Link to="/" className="flex justify-center md:justify-start">
+        <Link to="/" className="flex justify-center items-center md:justify-start ml-5 mt-3">
           <BabbleSvg className="px-2 w-12 h-12 rounded-full fill-white hover:bg-stone-900" />
+          <p className="hidden md:block md:font-semibold md:text-xl ">Babble</p>
         </Link>
-        <ul className="flex flex-col gap-3 mt-4">
+        <ul className="flex flex-col gap-3 mt-4 ml-5">
           <li className="flex justify-center md:justify-start">
             <Link
               to="/"
